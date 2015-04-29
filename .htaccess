@@ -1,0 +1,32 @@
+### Black-list IP-address
+allow from all
+#deny from x.x.x.x
+
+### Deny access to application configuration
+<Files config.ini>
+  order allow,deny
+  deny from all
+</Files>
+
+### Deny for crossdomain image loading
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+### <<<--- SET ACTUAL DOMAIN NAME
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?kidshaper.local [NC]  
+###- simple file extension list
+#RewriteRule \.(jpg|jpeg|png|gif)$ - [NC,F,L]
+###- or advanced file extension list
+RewriteRule \.(jpe?g|bmp|gif|png|css|mov|swf|dcr|exe|rar|avi|vob|zip|pdf|txt|doc|flv)$ - [NC,F,L]
+### Allow crossdomain image loading for friendly site
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www.)?yandex.ru [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www.)?google. [NC]
+
+### Deny browsing directory
+Options All -Indexes
+
+### Targeting all request on index.php
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* index.php [L]
