@@ -9,11 +9,13 @@ class Application {
     private $URIpath;
     private $GETParams;
     private $POSTparams;
+    private $HTMLsource;
 
     public function initApp() {
         $this->parseRoute();
         xdebug_var_dump('>>>route: ', $this->route);
         $this->initPage();
+        echo $this->HTMLsource;
     }
 
     private function parseRoute() {
@@ -53,16 +55,18 @@ class Application {
     private function initPage() {
         switch ($this->route['page']) {
             case 'index':
-                $pagePath = 'index';
+                $pagePath = '\Pages\index';
                 break;
             case 'api':
-                $pagePath = 'api\\' . $this->URIpath[2];
+                $pagePath = '\Pages\API\\' . $this->URIpath[2];
+            case 'index':
             default:
-                $pagePath = 'index';
+                $pagePath = '\Pages\index';
                 break;
         }
-        $pagePath = 'Pages\\' .$pagePath;
         $this->page = new $pagePath;
+        $this->HTMLsource = $this->page->initPage();
+        return $this->HTMLsource;
     }
 
 }
