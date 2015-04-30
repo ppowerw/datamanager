@@ -4,42 +4,33 @@ namespace Core;
 
 class Application {
 
-    private $route = [];
-    private $page;
-    private $URIpath;
-    private $GETParams;
-    private $POSTparams;
-    private $HTMLsource;
+    private $route;
+    private $controller;
+    private $GETParams = [];
 
     public function initApp() {
-        $this->parseRoute();
+        $this->route = $this->parseURL();
+        $this->GETParams = $this->parseGETParams($this->route);
         xdebug_var_dump('>>>route: ', $this->route);
-        $this->initPage();
-        echo $this->HTMLsource;
-    }
-
-    private function parseRoute() {
-        $this->route['page'] = $this->parseUrl();
-        return 0;
+        $controllerName = $this->getController($this->route);
+        $this->controller = $this->initController($controllerName);
     }
 
     private function parseUrl() {
+        // Set $routepath by URL
         $urlParse = parse_url(\Libs\InputFilter::init()->getGlobal('REQUEST_URI', 'SERVER'));
-        $url = $urlParse['path'];
+        $path = substr($urlParse['path'], 0, 240); //TBD - URI limits
+        return $path;
+    }
+
+    private function parseGETParams($url) {
+        // Set $GETParams, if contains
         if (strpos($url, "%3f")) {
-            $path = substr($url, 0, strpos($url, "%3f"));
-            $this->GETParams = $this->parseQueryString(substr($url, strpos($url, "%3f") + 3));
+            $$url = substr($url, 0, strpos($url, "%3f"));
+            $params = $this->parseQueryString(substr($url, strpos($url, "%3f") + 3));
+            return $params;
         } else {
-            $path = $url;
-        }
-        $this->URIpath = explode("%2f", substr($path, 0, 250));
-        if (isset($this->URIpath[1])) {
-            if (strpos($this->URIpath[1], ".")) {
-                $this->URIpath[1] = substr($this->URIpath[1], 0, strpos($this->URIpath[1], "."));
-            }
-            return $this->URIpath[1];
-        } else {
-            return 'index'; //Set default page
+            return null;
         }
     }
 
@@ -52,21 +43,33 @@ class Application {
         return $arr;
     }
 
-    private function initPage() {
-        switch ($this->route['page']) {
-            case 'index':
-                $pagePath = '\Pages\index';
-                break;
-            case 'api':
-                $pagePath = '\Pages\API\\' . $this->URIpath[2];
-            case 'index':
-            default:
-                $pagePath = '\Pages\index';
-                break;
+    private function getController($path) {
+        $route = explode("%2f", substr($path, 0, 100));
+        if (isset($route[1])) {
+            if (strpos($route[1], ".")) {
+                $route[1] = substr($route[1], 0, strpos($route[1], "."));
+            }
+            return strtolower($route[1]);
+        } else {
+            return 'index'; //Set default link
         }
-        $this->page = new $pagePath;
-        $this->HTMLsource = $this->page->initPage();
-        return $this->HTMLsource;
     }
 
+    private function initController($name) {
+        switch ($name) {
+            case 'api':
+                $label = 'API';
+                break;
+            case 'cpanel':
+                $label = 'CPanel';
+                break;
+            case 'index':
+            default:
+                $label = 'Frontend';
+                break;
+        }
+        $controllerPath = '\Controllers\\' . $label;
+        $this->controller = new $controllerPath;
+        $this->controller->init();
+    }
 }

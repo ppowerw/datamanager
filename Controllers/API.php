@@ -1,13 +1,15 @@
 <?php
 
-namespace Pages\API;
+namespace Controllers;
 
-class Subscribe {
+class API{
 
-    public function initPage() {
+    public function init() {
         $email = \Libs\InputFilter::init()->getGlobal('email', 'POST');
         $outputContent = PHP_EOL . '<h3>For email: ' . $email . '</h3>'.PHP_EOL. '<p>Subscribe catch</p>' .PHP_EOL;
-        return $outputContent;
+        echo $outputContent;
     }
+    
+    
 
 }
