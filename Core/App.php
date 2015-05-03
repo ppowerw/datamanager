@@ -2,22 +2,29 @@
 
 namespace Core;
 
-class Application {
-
-    private $route;
-    private $controller;
-    private $GETParams = [];
+class App {
+    
+    private static $instance = null;
+    private $controller;    
+    public $route;
+    public $GETParams = [];
+    
+    public static function getInstance (){
+        if(is_null(self::$instance)){
+            self::$instance = new App();
+        }
+        return self::$instance;
+    }
 
     public function initApp() {
         $this->route = $this->parseURL();
         $this->GETParams = $this->parseGETParams($this->route);
-        xdebug_var_dump('>>>route: ', $this->route);
         $controllerName = $this->getController($this->route);
         $this->controller = $this->initController($controllerName);
     }
 
     private function parseUrl() {
-        // Set $routepath by URL
+        // Set $route by URL
         $urlParse = parse_url(\Libs\InputFilter::init()->getGlobal('REQUEST_URI', 'SERVER'));
         $path = substr($urlParse['path'], 0, 240); //TBD - URI limits
         return $path;
@@ -71,5 +78,10 @@ class Application {
         $controllerPath = '\Controllers\\' . $label;
         $this->controller = new $controllerPath;
         $this->controller->init();
+    }
+    
+        
+    public function getRoute(){
+        return $this->route;
     }
 }
