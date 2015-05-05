@@ -12,8 +12,6 @@ class HTMLParser {
         $this->modulesDirectory = $modulesDirectory;
         $content = $this->loadHTMLTemplate($pagePath);
         $HTMLSource = $this->findModuleInContent($content);
-        
-        var_dump("0000000000", $this->listModuleData, "0000000000");
         return $HTMLSource;
     }
     
@@ -31,7 +29,7 @@ class HTMLParser {
     private function findModuleInContent ($content){
         $moduleRegexp = '/\{\{module:(.+)\}\}/';
             $HTMLSource = preg_replace_callback($moduleRegexp, function($matches) {
-            return $this->loadModuleTemplate($matches[1]);
+            return $this->loadModuleTemplate(ucfirst($matches[1]));
         }, $content);
         return $HTMLSource;
     }
@@ -47,8 +45,8 @@ class HTMLParser {
     private function initModuleData($content){
         $dataRegexp = '/\{\{(.+)\.(.+)\}\}/';
         preg_replace_callback($dataRegexp, function($matches) {
-            var_dump($matches,'}}}}}}');
-            $this->listModuleData[$matches[1]][$matches[2]] = $matches[2];
+            //var_dump($matches,'}}}}}}');
+            $this->listModuleData[ucfirst($matches[1])][ucfirst($matches[2])] = ucfirst($matches[2]);
         }, $content);
         return 1;
     }

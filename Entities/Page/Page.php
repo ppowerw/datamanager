@@ -15,7 +15,6 @@ class Page {
         $this->pageInfo = $data;
         $this->pageTemplate = $this->loadTemplate();
         
-        //echo $this->pageTemplate;
         // Debug Page build
         echo PHP_EOL . '<hr> debug_backtrace Page:';
         debug_backtrace();
@@ -25,6 +24,10 @@ class Page {
     
     public function getPageParams() {
         return $this->pageParams;
+    }
+    
+    public function getPageTemplate() {
+        return $this->pageTemplate;
     }
 
     private function loadTemplate() {
@@ -40,10 +43,5 @@ class Page {
         // May be implemented as class in Libs
         $modules = \Libs\HTMLParser::getModulesFromHTML($data);
         return $modules;
-    }
-    
-    public function renderPage($data) {
-        // TBD need to replace defined data into $this->pageTemplate
-        return $output;
     }
 }

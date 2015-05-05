@@ -4,22 +4,22 @@ namespace Entities\Site;
 
 class Site {
 
-    private $path;
-    private $cfgJSPath = '/HTML/Site/js/';
-    private $cfgCSSPath = '/HTML/Site/css/';
+    private $title ='That title';
+    private $path ='HTML/Site';
     
     public function __construct($params) {
         $this->setData();
     }
-    
+   
     public function getData($value) {
-        if (!$this->$value){
-            return $this->$value;
+        $prop = lcfirst($value);
+        if (property_exists($this,$prop)){
+            return $this->$prop;
         }
         return null;
     }
-    
+
     private function setData(){
-        $this->path = parse_url(\Libs\InputFilter::init()->getGlobal('REQUEST_URI','SERVER'))['path'];
+        //$this->path = \Libs\InputFilter::init()->getGlobal('SERVER_NAME','SERVER');
     }
 }

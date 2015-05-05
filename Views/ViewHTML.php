@@ -2,35 +2,22 @@
 namespace Views;
 
 class ViewHTML{
-    
-    public static function getModulesFromContent(){
         
-    }
-    
-    public static function parseContent(){
+    public static function renderContent($HTMLcontent /*Replacement content by template: {{key.value}}*/, $dataSet /* Data array for replacing by 'key' in ASSOC array*/){
+        var_dump('======$dataSet:=====', $dataSet , '==================');
         
-    }
-    
-    public static function renderContent(){
+        //var_dump('====== {{Site.Path}} ->:=====', $dataSet['Site']['Path'] , '==================');
         
-    }
-    
-     /*   private function loadHTMLTemplate($name, $varList) {
-        ob_start();
-        include($this->path . $name. '.html');
-        $output = ob_get_clean();
-        $this->outputData = $this->parseModuleParams($output,$varList);
-        ob_flush();
-    }
-    
-    private function parseModuleParams($output,$varList){
-        foreach ($varList as $key => $value) {
-            $data = str_replace("{{" . $key . "}}", $value, $output);
+        foreach ($dataSet as $model => $dataArr) {
+            foreach ($dataArr as $key => $value) {
+               $replacement = "/{{" . $model. "." . $key. "}}/";
+            var_dump("====== Parse data: " .$replacement, "==================");
+            $outputHTML = preg_replace($replacement, $value,$HTMLcontent);
+            }
         }
-        return $data;
+        //var_dump('$HTMLcontent>>>>>>', $HTMLcontent);
+        var_dump('$outputHTML>>>>>>', $outputHTML);
+        return $outputHTML;
     }
-      
-      */
-    
 }
 

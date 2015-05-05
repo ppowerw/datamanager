@@ -12,7 +12,7 @@ allow from all
 RewriteEngine on
 RewriteCond %{HTTP_REFERER} !^$
 ### <<<--- SET ACTUAL DOMAIN NAME
-RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?kidshaper.local [NC]  
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?datamanager.local [NC]  
 ###- simple file extension list
 #RewriteRule \.(jpg|jpeg|png|gif)$ - [NC,F,L]
 ###- or advanced file extension list

@@ -8,15 +8,33 @@ class Frontend {
 
     private $pageInfo;
     private $pageObj;
+    private $models;
     private $pageData;
     private $outputContent;
 
     public function init() {
+        
+        // TBD As need to redesign:
+        // 1. Define page template (this)
+        // 2. Get template with modules (View) -extract from "Page"
+        // 2.1. Get HTML Content (View)
+        // 2.2. Get Modules data from template (View )
+        // 3. Init models for modules (Models)
+        // 4. Get data from Models for HTML content (Models)
+        // 5. Parse HTML content with Data (View render)
+        
         $this->pageInfo = $this->definePage();
         $this->pageObj = new \Entities\Page\Page($this->pageInfo);
-        $this->pageData = $this->initPageModel($this->pageObj->getPageParams());
-        var_dump('$this->pageData===', $this->pageData ,'===========');
-        $this->outputContent = $this->pageObj->render($this->pageData);
+        $this->models = $this->initPageModel($this->pageObj->getPageParams());
+        var_dump('$this->models===', $this->models ,'===========');
+        foreach ($this->pageObj->getPageParams() as $key => $value) {
+            $this->pageData[$key] = $this->getModelData($key, $value);
+            var_dump('===$this->pageData[$dataSetName]====', $this->pageData[$key], '===============');
+        }
+        
+         
+        $this->outputContent = \Views\ViewHTML::renderContent($this->pageObj->getPageTemplate(),$this->pageData);
+        echo $this->outputContent;
     }
 
     private function definePage() {
@@ -40,9 +58,19 @@ class Frontend {
     // Create models for 
     private function initPageModel($data){
         foreach ($data as $key => $value){
-            $modelPath = $this->modelsPath . ucwords($key) .'\\'. $key;
+            $modelPath = $this->modelsPath . $key .'\\'. $key;
             $data[$key] = new $modelPath($value);
         }
         return $data;
+    }
+    
+    private function getModelData ($model, $params){
+        var_dump('$model>>>', $model, '===;');
+        var_dump('$params>>>', $params, '===;');
+        $modelData=[];
+        foreach ($params as $value){
+            $modelData[$value] = $this->models[$model]->getData($value);
+        }
+        return $modelData;
     }
 }
