@@ -1,3 +1,4 @@
+{!Module:MainMenu!}
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -5,18 +6,46 @@
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
+                <!--
+                <li class="active"><a href="/index.html">Home</a></li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
-                        <span class="caret"></span>Edit</a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="/edit">
+                        Edit<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Dataset</a></li>
-                        <li><a href="#">Structure</a></li>
+                        <li><a href="/edit/dataset">Dataset</a></li>
+                        <li><a href="/edit/structure">Structure</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/about">About</a></li>
+                -->
+                <li><a href="/level1_page1">level1_page1</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="/level1_page1">
+                        level1_page2<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/level1_page2">level2_page1</a></li>
+                        <li><a href="/level1_page2">level2_page2</a></li>
+                    </ul>
+                <li><a href="/level1_page2">level1_page3</a></li>
+                <li><a href="/level1_page2">level1_page4</a></li>
             </ul>
         </div>
     </div>
 </nav>
+
+<!--
+<ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Главная</a></li>
+                        <li><a href="about.html">О компании</a></li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Продукция
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="sruby.html">Срубы</a></li>
+                                <li><a href="otdelka.html">Отделка</a></li>
+                            </ul>
+                        </li><li><a href="partners.html">Для партнеров</a></li>
+                        <li><a href="contacts.html">Контакты</a></li>
+                    </ul>
+-->

@@ -26,13 +26,9 @@ class Frontend {
         $this->pageInfo = $this->definePage();
         $this->pageObj = new \Entities\Page\Page($this->pageInfo);
         $this->models = $this->initPageModel($this->pageObj->getPageParams());
-        var_dump('$this->models===', $this->models ,'===========');
         foreach ($this->pageObj->getPageParams() as $key => $value) {
             $this->pageData[$key] = $this->getModelData($key, $value);
-            var_dump('===$this->pageData[$dataSetName]====', $this->pageData[$key], '===============');
-        }
-        
-         
+        }       
         $this->outputContent = \Views\ViewHTML::renderContent($this->pageObj->getPageTemplate(),$this->pageData);
         echo $this->outputContent;
     }
@@ -40,6 +36,8 @@ class Frontend {
     private function definePage() {
         //Prepare URI path for search
         $searchPage = explode("%2f", substr(\Core\App::getInstance()->route, 0, 100))[1];
+        // \Libs\Logger::doLog()->debug($searchPage, 'Requested page: ');
+        if ($searchPage == ''){$searchPage='index';}
         if (strpos($searchPage, ".")) {
             $searchPage = substr($searchPage, 0, strpos($searchPage, "."));
         }
@@ -47,7 +45,7 @@ class Frontend {
         $listPages = \Entities\SiteTree\SiteTree::getSiteTreeColumn('url');
         $result = array_search($searchPage, $listPages);
         if (is_bool($result)) {
-            echo '(404) Didn\'t FOUND PAGE ' . $searchPage;
+            \Libs\Logger::doLog()->debug('(404) Didn\'t FOUND PAGE: ' . $searchPage);
             // Need to add 404 page
             die();
             return null;
@@ -65,12 +63,12 @@ class Frontend {
     }
     
     private function getModelData ($model, $params){
-        var_dump('$model>>>', $model, '===;');
-        var_dump('$params>>>', $params, '===;');
+        // \Libs\Logger::doLog()->debug($params, 'Get data for model: ' . $model);
         $modelData=[];
         foreach ($params as $value){
             $modelData[$value] = $this->models[$model]->getData($value);
         }
+        // \Libs\Logger::doLog()->debug($modelData, 'Setted data for model: ' .$model);
         return $modelData;
     }
 }

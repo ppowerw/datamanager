@@ -24,6 +24,7 @@ RewriteCond %{HTTP_REFERER} !^http(s)?://(www.)?google. [NC]
 ### Deny browsing directory
 Options All -Indexes
 
+DirectoryIndex index.php
 ### Targeting all request on index.php
 RewriteEngine On
 RewriteBase /

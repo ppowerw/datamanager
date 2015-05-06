@@ -5,7 +5,7 @@ namespace Entities\Site;
 class Site {
 
     private $title ='That title';
-    private $path ='HTML/Site';
+    private $path ='/HTML/Site';
     
     public function __construct($params) {
         $this->setData();
@@ -20,6 +20,7 @@ class Site {
     }
 
     private function setData(){
-        //$this->path = \Libs\InputFilter::init()->getGlobal('SERVER_NAME','SERVER');
+        //$this->value = 'SERVER_PROTOCOL'
+        // $this->path =  '/' . \Libs\InputFilter::init()->getGlobal('SERVER_NAME', 'SERVER') . '/' . $this->path;
     }
 }

@@ -14,11 +14,7 @@ class Page {
     public function __construct($data) {
         $this->pageInfo = $data;
         $this->pageTemplate = $this->loadTemplate();
-        
-        // Debug Page build
-        echo PHP_EOL . '<hr> debug_backtrace Page:';
-        debug_backtrace();
-        var_dump($this, 'END Page ============');
+        //// \Libs\Logger::doLog()->debug($this, 'Page');
         return $this;
     }
     
